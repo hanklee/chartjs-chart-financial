@@ -34,8 +34,8 @@ class FinancialController extends BarController {
 		const parsed = me.getParsed(index);
 		const axis = me._cachedMeta.iScale.axis;
 
-		const {o, h, l, c} = parsed;
-		const value = `O: ${o}  H: ${h}  L: ${l}  C: ${c}`;
+		const {open, high, low, close, volume} = parsed;
+		const value = `O: ${open}  H: ${high}  L: ${low}  C: ${close}  V: ${volume}`;
 
 		return {
 			label: `${me._cachedMeta.iScale.getLabelForValue(parsed[axis])}`,
@@ -76,8 +76,8 @@ class FinancialController extends BarController {
 		let max = Number.NEGATIVE_INFINITY;
 		for (let i = 0; i < _parsed.length; i++) {
 			const data = _parsed[i];
-			min = Math.min(min, data.l);
-			max = Math.max(max, data.h);
+			min = Math.min(min, data.low);
+			max = Math.max(max, data.high);
 		}
 		return {min, max};
 	}
@@ -114,10 +114,10 @@ class FinancialController extends BarController {
 		const base = vscale.getBasePixel();
 		const ipixels = me._calculateBarIndexPixels(index, ruler, options);
 		const data = me.chart.data.datasets[me.index].data[index];
-		const open = vscale.getPixelForValue(data.o);
-		const high = vscale.getPixelForValue(data.h);
-		const low = vscale.getPixelForValue(data.l);
-		const close = vscale.getPixelForValue(data.c);
+		const open = vscale.getPixelForValue(data.open);
+		const high = vscale.getPixelForValue(data.high);
+		const low = vscale.getPixelForValue(data.low);
+		const close = vscale.getPixelForValue(data.close);
 
 		return {
 			base: reset ? base : low,
@@ -230,9 +230,9 @@ FinancialController.overrides = {
 						return defaults.plugins.tooltip.callbacks.label(ctx);
 					}
 
-					const {o, h, l, c} = point;
+					const {open, high, low, close, volume} = point;
 
-					return `O: ${o}  H: ${h}  L: ${l}  C: ${c}`;
+					return `O: ${open}  H: ${high}  L: ${low}  C: ${close}  V: ${volume}`;
 				}
 			}
 		}
